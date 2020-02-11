@@ -1,0 +1,129 @@
+/*
+블럭요소(table) 중앙 정렬
+https://webdir.tistory.com/31
+*/
+
+:root {
+  --theme-gryffindor-color: rgb(222, 70, 70);
+  --theme-hufflepuff-color: rgb(228, 204, 62);
+  --theme-ravenclaw-color: rgb(98, 111, 201);
+  --theme-slytherin-color: rgb(48, 163, 55);
+}
+
+.logo {
+  width: 50px;
+}
+
+section {
+  width: auto;
+  text-align: center;
+}
+
+table {
+  width: 480px;
+  margin: 0 auto;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
+.house {
+  width: 50px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal_content[data-theme="Gryffindor"] {
+  /* background-color: var(--theme-gryffindor-color); */
+  background: linear-gradient(
+    -30deg,
+    rgba(222, 70, 70, 1) 0%,
+    rgba(214, 49, 49, 1) 25%,
+    rgba(195, 33, 33, 1) 50%,
+    rgba(176, 20, 20, 1) 75%,
+    rgba(162, 11, 11, 1) 100%
+  );
+  color: yellow;
+}
+.modal_content[data-theme="Hufflepuff"] {
+  /* background-color: var(--theme-hufflepuff-color); */
+  background: linear-gradient(
+    -25deg,
+    rgba(228, 204, 62, 1) 0%,
+    rgba(207, 182, 41, 1) 25%,
+    rgba(186, 163, 26, 1) 50%,
+    rgba(163, 141, 13, 1) 75%,
+    rgba(157, 135, 8, 1) 100%
+  );
+  color: black;
+}
+.modal_content[data-theme="Ravenclaw"] {
+  /* background-color: var(--theme-ravenclaw-color); */
+  background: linear-gradient(
+    -30deg,
+    rgba(98, 111, 201, 1) 0%,
+    rgba(73, 87, 184, 1) 25%,
+    rgba(54, 67, 158, 1) 50%,
+    rgba(43, 57, 154, 1) 75%,
+    rgba(30, 43, 134, 1) 100%
+  );
+  color: yellow;
+}
+.modal_content[data-theme="Slytherin"] {
+  /* background-color: var(--theme-slytherin-color); */
+  background: linear-gradient(
+    -30deg,
+    rgba(48, 163, 55, 1) 0%,
+    rgba(34, 150, 40, 1) 25%,
+    rgba(21, 134, 27, 1) 50%,
+    rgba(13, 121, 19, 1) 75%,
+    rgba(3, 105, 9, 1) 100%
+  );
+  color: red;
+}
+
+.modal_content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 75%;
+  border-radius: 20px;
+}
+
+.modal_content_main {
+  font-size: large;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn_detail_img {
+  width: 30px;
+}
