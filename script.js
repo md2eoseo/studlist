@@ -44,10 +44,10 @@ function start() {
   HTML.modal_close = document.querySelector(".modal_close");
 
   texts_house.forEach(function(e, index) {
-    if (e.textContent == "Gryffindor") e.src = "./gryffindor.PNG";
-    if (e.textContent == "Hufflepuff") e.src = "./hufflepuff.PNG";
-    if (e.textContent == "Ravenclaw") e.src = "./ravenclaw.PNG";
-    if (e.textContent == "Slytherin") e.src = "./slytherin.PNG";
+    if (e.textContent == "Gryffindor") e.src = "img/gryffindor.PNG";
+    if (e.textContent == "Hufflepuff") e.src = "img/hufflepuff.PNG";
+    if (e.textContent == "Ravenclaw") e.src = "img/ravenclaw.PNG";
+    if (e.textContent == "Slytherin") e.src = "img/slytherin.PNG";
   });
 
   btns_detailArr.forEach(function(e, index) {
