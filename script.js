@@ -9,82 +9,169 @@
 // fetching json file
 // https://stackoverflow.com/questions/51859358/how-to-read-json-file-with-fetch-in-javascript
 
-const file = "./students1991.json";
+"use strict";
+window.addEventListener("DOMContentLoaded", start);
 
-function readFile() {
+const file = "./students.json";
+const HTML = {};
+const students = [];
+const Student = {
+  fullname: "",
+  firstName: "",
+  lastName: "",
+  middleName: "",
+  nickName: "",
+  gender: "",
+  house: "",
+  fileName: "",
+  desc: "",
+  age: 0
+};
+let i = 0,
+  cnt = 0;
+
+function start() {
+  console.log("start()");
+
+  HTML.modal = document.querySelector(".modal");
+  HTML.btn_detail = document.querySelectorAll(".btn_detail");
+  const btns_detailArr = Array.from(HTML.btn_detail);
+  HTML.modal_content = document.querySelector(".modal_content");
+  HTML.modal_name = document.querySelector(".modal_name");
+  HTML.modal_house = document.querySelector(".modal_house");
+  HTML.modal_close = document.querySelector(".modal_close");
+
+  btns_detailArr.forEach(function(e, index) {
+    e.onclick = function() {
+      console.log(index);
+      HTML.modal_name.innerHTML = students[index].fullname;
+      HTML.modal_house.innerHTML = students[index].house;
+      HTML.modal_content.dataset.theme = students[index].house;
+      HTML.modal.style.display = "block";
+    };
+  });
+
+  HTML.modal_close.onclick = function() {
+    HTML.modal.style.display = "none";
+  };
+
+  window.onclick = function(e) {
+    if (e.target == HTML.modal) {
+      HTML.modal.style.display = "none";
+    }
+  };
+
+  document
+    .querySelector("select#theme")
+    .addEventListener("change", selectedTheme);
+  function selectedTheme() {
+    const selectedTheme = this.value;
+    HTML.modal_content.dataset.theme = selectedTheme;
+  }
+
+  loadJSON();
+}
+
+function loadJSON() {
+  console.log("loadJSON()");
+
   fetch(file)
-    .then(response => {
-      return response.json();
-    })
-    .then(students => {
-      // Work with JSON data here
-      // console.log(students[0].house);
-
-      if ("content" in document.createElement("template")) {
-        const student = document.querySelector("#student");
-        const table = document.querySelector("tbody");
-
-        students.forEach(e => {
-          let clone = document.importNode(student.content, true);
-
-          // td = clone.querySelectorAll("td");
-          house = clone.querySelector("img");
-          fullname = clone.querySelector("h3");
-          // console.log(house, fullname);
-
-          if (e.house == "Gryffindor") house.src = "gryffindor.png";
-          if (e.house == "Hufflepuff") house.src = "hufflepuff.png";
-          if (e.house == "Ravenclaw") house.src = "ravenclaw.png";
-          if (e.house == "Slytherin") house.src = "slytherin.png";
-
-          // textContent에는 스크립트를 작성할 수 있어서 위험 --> innerHTML 사용 권장
-          // td[0].textContent = students.house;
-          // td[1].textContent = students.fullname;
-          house.innerHTML = e.house;
-          fullname.innerHTML = e.fullname;
-
-          table.appendChild(clone);
-        });
-      }
-
-      const modal = document.querySelector(".modal");
-      const btn = document.querySelectorAll(".btn_detail");
-      const btnsArr = Array.from(btn);
-      const modal_name = document.querySelector(".modal_name");
-      const modal_house = document.querySelector(".modal_house");
-      const span = document.querySelector(".close");
-
-      btnsArr.forEach(function(e, index) {
-        e.onclick = function() {
-          modal_name.innerHTML = students[index].fullname;
-          modal_house.innerHTML = students[index].house;
-          document.querySelector(".modal_content").dataset.theme =
-            students[index].house;
-          modal.style.display = "block";
-        };
-      });
-
-      span.onclick = function() {
-        modal.style.display = "none";
-      };
-
-      window.onclick = function(event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      };
-
-      document
-        .querySelector("select#theme")
-        .addEventListener("change", selected);
-      function selected() {
-        const selectedTheme = this.value;
-        document.querySelector(".modal_content").dataset.theme = selectedTheme;
-      }
+    .then(response => response.json())
+    .then(jsonData => {
+      // when loaded, prepare objects
+      prepareObjects(jsonData);
     })
     .catch(err => {
       // Do something for an error here
     });
 }
 
-readFile();
+function prepareObjects(jsonData) {
+  console.log("prepareObjects()");
+
+  jsonData.forEach(jsonObject => {
+    // TODO: Create new object with cleaned data - and store that in the students array
+    const student = Object.create(Student);
+    let str = jsonObject.fullname;
+    let newstr = "";
+
+    // TODO: fullname Capitalization
+    for (i = 0; i < str.length - 1; i++) {
+      if (str[i] == " " || str[i] == "-" || str[i] == '"') {
+        newstr += str[i];
+        while (str[i + 1] == " " || str[i + 1] == "-" || str[i + 1] == '"') {
+          newstr += str[++i];
+        }
+        newstr += str[++i].toUpperCase();
+      } else if (i == 0) newstr += str[i].toUpperCase();
+      else newstr += str[i].toLowerCase();
+    }
+    if (str.length - 1 == i) newstr += str[i].toLowerCase();
+    cnt = 0;
+    for (i = 0; ; i++) {
+      if (newstr[i] == " " || newstr[i] == "-" || newstr[i] == '"') cnt++;
+      else break;
+    }
+    if (cnt > 0) newstr = newstr.substring(cnt);
+    const student_fullname = newstr;
+
+    // TODO: house Capitalization
+    str = jsonObject.house;
+    const student_house =
+      str.trim()[0].toUpperCase() +
+      str
+        .trim()
+        .substring(1)
+        .toLowerCase();
+
+    // TODO: store data in Student object
+
+    student.fullname = student_fullname;
+    student.firstName = student_fullname.substring(
+      0,
+      student_fullname.indexOf(" ")
+    );
+    student.lastName = student_fullname.substring(
+      student_fullname.lastIndexOf(" ")
+    );
+    student.middleName = student_fullname.substring(
+      student_fullname.indexOf(" ") + 1,
+      student_fullname.lastIndexOf(" ")
+    );
+    student.house = student_house;
+    student.gender = jsonObject.gender;
+
+    students.push(student);
+  });
+
+  displayList();
+}
+
+function displayList() {
+  console.log("displayList()");
+
+  // clear the list
+  document.querySelector("#list tbody").innerHTML = "";
+
+  // build a new list
+  students.forEach(displayStudent);
+}
+
+function displayStudent(student) {
+  console.log("displayStudent()");
+
+  // create clone
+  const clone = document
+    .querySelector("template#student")
+    .content.cloneNode(true);
+
+  // set clone data
+  clone.querySelector("[data-field=house]").textContent = student.house;
+  clone.querySelector("[data-field=fullname]").textContent = student.fullname;
+
+  // if (clone.querySelector("[data-field=house]").textContent == "Gryffindor")
+  //   house.src = "gryffindor.png";
+
+  // append clone to list
+  document.querySelector("#list tbody").appendChild(clone);
+}
