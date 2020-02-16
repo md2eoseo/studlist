@@ -10,7 +10,7 @@
 // https://stackoverflow.com/questions/51859358/how-to-read-json-file-with-fetch-in-javascript
 
 "use strict";
-window.addEventListener("DOMContentLoaded", start);
+window.addEventListener("DOMContentLoaded", loadJSON);
 
 const file = "./students.json";
 const HTML = {};
@@ -69,7 +69,7 @@ function start() {
     HTML.modal_content.dataset.theme = selectedTheme;
   }
 
-  loadJSON();
+  // loadJSON();
 }
 
 function loadJSON() {
@@ -83,6 +83,7 @@ function loadJSON() {
     })
     .catch(err => {
       // Do something for an error here
+      console.log("cannot fetch JSON file!!!");
     });
 }
 
@@ -155,6 +156,8 @@ function displayList() {
 
   // build a new list
   students.forEach(displayStudent);
+
+  start();
 }
 
 function displayStudent(student) {
