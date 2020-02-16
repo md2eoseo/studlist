@@ -33,6 +33,8 @@ let i = 0,
 function start() {
   console.log("start()");
 
+  HTML.text_house = document.querySelectorAll(".house");
+  const texts_house = Array.from(HTML.text_house);
   HTML.modal = document.querySelector(".modal");
   HTML.btn_detail = document.querySelectorAll(".btn_detail");
   const btns_detailArr = Array.from(HTML.btn_detail);
@@ -40,6 +42,13 @@ function start() {
   HTML.modal_name = document.querySelector(".modal_name");
   HTML.modal_house = document.querySelector(".modal_house");
   HTML.modal_close = document.querySelector(".modal_close");
+
+  texts_house.forEach(function(e, index) {
+    if (e.textContent == "Gryffindor") e.src = "gryffindor.png";
+    if (e.textContent == "Hufflepuff") e.src = "hufflepuff.png";
+    if (e.textContent == "Ravenclaw") e.src = "ravenclaw.png";
+    if (e.textContent == "Slytherin") e.src = "slytherin.png";
+  });
 
   btns_detailArr.forEach(function(e, index) {
     e.onclick = function() {
@@ -171,9 +180,6 @@ function displayStudent(student) {
   // set clone data
   clone.querySelector("[data-field=house]").textContent = student.house;
   clone.querySelector("[data-field=fullname]").textContent = student.fullname;
-
-  // if (clone.querySelector("[data-field=house]").textContent == "Gryffindor")
-  //   house.src = "gryffindor.png";
 
   // append clone to list
   document.querySelector("#list tbody").appendChild(clone);
