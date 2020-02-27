@@ -26,7 +26,7 @@ const Student = {
   lastName: "",
   middleName: "",
   nickName: "",
-  blood: "pure",
+  blood: "",
   gender: "",
   house: "",
   fileName: "",
@@ -94,17 +94,24 @@ function prepareStudentObjects(jsonData) {
       student_fullname.indexOf(" ")
     );
     student.lastName = student_fullname.substring(
-      student_fullname.lastIndexOf(" ")
+      student_fullname.lastIndexOf(" ") + 1
     );
     student.middleName = student_fullname.substring(
       student_fullname.indexOf(" ") + 1,
       student_fullname.lastIndexOf(" ")
     );
-    student.house = student_house;
     student.gender = jsonObject.gender;
+    student.house = student_house;
+    student.blood = setBloodStatus(student.lastName) ? "Half" : "Pure";
 
     students.push(student);
   });
+
+  function setBloodStatus(lastName) {
+    const result = familiesJSON.half.find(e => e === lastName);
+    if (result == undefined) return false;
+    else return true;
+  }
 
   function fullnameCapitalization(fullname) {
     let capitalizedFullname = "";
@@ -135,7 +142,7 @@ function prepareStudentObjects(jsonData) {
       else break;
     }
     if (cnt > 0) capitalizedFullname = capitalizedFullname.substring(cnt);
-    return capitalizedFullname;
+    return capitalizedFullname.trim();
   }
 
   function houseCapitalization(house) {
@@ -226,6 +233,9 @@ function setting() {
       HTML.modal_if_nickname.appendChild(span_blank);
       document.querySelector(".modal_nickname").innerHTML =
         students[i].nickName;
+    } else {
+      while (HTML.modal_if_nickname.hasChildNodes())
+        HTML.modal_if_nickname.removeChild(HTML.modal_if_nickname.firstChild);
     }
   });
 
