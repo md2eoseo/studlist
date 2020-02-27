@@ -108,6 +108,7 @@ function prepareStudentObjects(jsonData) {
   });
 
   function setBloodStatus(lastName) {
+    console.log(lastName);
     const result = familiesJSON.half.find(e => e === lastName);
     if (result == undefined) return false;
     else return true;
@@ -202,12 +203,7 @@ function setting() {
   HTML.modal_close = document.querySelector(".modal_close");
 
   // translate textContent to img file
-  texts_house.forEach(e => {
-    if (e.textContent == "Gryffindor") e.src = "img/gryffindor.PNG";
-    if (e.textContent == "Hufflepuff") e.src = "img/hufflepuff.PNG";
-    if (e.textContent == "Ravenclaw") e.src = "img/ravenclaw.PNG";
-    if (e.textContent == "Slytherin") e.src = "img/slytherin.PNG";
-  });
+  texts_house.forEach(e => (e.src = `img/${e.textContent}.PNG`));
 
   // if clicks detail button
   btns_detail.forEach((e, i) => {
@@ -233,9 +229,6 @@ function setting() {
       HTML.modal_if_nickname.appendChild(span_blank);
       document.querySelector(".modal_nickname").innerHTML =
         students[i].nickName;
-    } else {
-      while (HTML.modal_if_nickname.hasChildNodes())
-        HTML.modal_if_nickname.removeChild(HTML.modal_if_nickname.firstChild);
     }
   });
 
