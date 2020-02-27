@@ -73,11 +73,21 @@ function prepareStudentObjects(jsonData) {
   jsonData.forEach(jsonObject => {
     // Create new object with cleaned data - and store that in the students array
     const student = Object.create(Student);
-    const student_fullname = fullnameCapitalization(jsonObject.fullname);
+    let student_fullname = fullnameCapitalization(jsonObject.fullname);
     const student_house = houseCapitalization(jsonObject.house);
 
     // store data in Student object
+    student.nickName = "";
+    if (student_fullname.indexOf('"') != -1) {
+      student.nickName = student_fullname.substring(
+        student_fullname.indexOf('"') - 1,
+        student_fullname.lastIndexOf('"') + 2
+      );
+      student_fullname = student_fullname.replace(student.nickName, " ");
+      student.nickName = student.nickName.trim();
+    }
     student.fullname = student_fullname;
+
     student.firstName = student_fullname.substring(
       0,
       student_fullname.indexOf(" ")
