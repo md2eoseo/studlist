@@ -1,3 +1,4 @@
+"use strict";
 // loading json file
 // https://stackoverflow.com/questions/19706046/how-to-read-an-external-local-json-file-in-javascript
 // Access to XMLHttpRequest from origin 'null' has been blocked by CORS policy
@@ -8,8 +9,6 @@
 // https://gomakethings.com/es6-foreach-loops-with-vanilla-javascript/
 // fetching json file
 // https://stackoverflow.com/questions/51859358/how-to-read-json-file-with-fetch-in-javascript
-
-"use strict";
 window.addEventListener("DOMContentLoaded", loadJSON);
 
 const file = "./students.json";
