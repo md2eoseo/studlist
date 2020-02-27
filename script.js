@@ -187,6 +187,7 @@ function setting() {
     if (e.textContent == "Slytherin") e.src = "img/slytherin.PNG";
   });
 
+  // if clicks detail button
   btns_detail.forEach((e, i) => {
     e.onclick = function() {
       console.log(students[i].fullname);
@@ -197,6 +198,7 @@ function setting() {
     };
   });
 
+  //if clicks close button on modal
   HTML.modal_close.onclick = function() {
     HTML.modal_name.innerHTML = "";
     HTML.modal_house.innerHTML = "";
@@ -204,6 +206,7 @@ function setting() {
     HTML.modal.style.display = "none";
   };
 
+  //if clicks outside the modal, then close the modal
   window.onclick = function(e) {
     if (e.target == HTML.modal) {
       HTML.modal_name.innerHTML = "";
@@ -212,12 +215,4 @@ function setting() {
       HTML.modal.style.display = "none";
     }
   };
-
-  // document
-  //   .querySelector("select#theme")
-  //   .addEventListener("change", selectedTheme);
-  // function selectedTheme() {
-  //   const selectedTheme = this.value;
-  //   HTML.modal_content.dataset.theme = selectedTheme;
-  // }
 }
