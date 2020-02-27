@@ -26,6 +26,7 @@ const Student = {
   lastName: "",
   middleName: "",
   nickName: "",
+  blood: "pure",
   gender: "",
   house: "",
   fileName: "",
@@ -179,6 +180,7 @@ function displayStudent(student) {
 }
 
 function setting() {
+  // querySelector Set
   HTML.text_house = document.querySelectorAll(".house");
   const texts_house = Array.from(HTML.text_house);
   HTML.btn_detail = document.querySelectorAll(".btn_detail");
@@ -186,7 +188,10 @@ function setting() {
   HTML.modal = document.querySelector(".modal");
   HTML.modal_content = document.querySelector(".modal_content");
   HTML.modal_name = document.querySelector(".modal_name");
+  HTML.modal_gender = document.querySelector(".modal_gender");
   HTML.modal_house = document.querySelector(".modal_house");
+  HTML.modal_if_nickname = document.querySelector(".modal_if_nickname");
+  HTML.modal_blood = document.querySelector(".modal_blood");
   HTML.modal_close = document.querySelector(".modal_close");
 
   // translate textContent to img file
@@ -201,18 +206,38 @@ function setting() {
   btns_detail.forEach((e, i) => {
     e.onclick = function() {
       console.log(students[i].fullname);
+
+      // show up data on modal
       HTML.modal_name.innerHTML = students[i].fullname;
+      HTML.modal_gender.innerHTML = students[i].gender == "boy" ? "♂" : "♀";
       HTML.modal_house.innerHTML = students[i].house;
+      HTML.modal_blood.innerHTML = students[i].blood;
       HTML.modal_content.dataset.theme = students[i].house;
       HTML.modal.style.display = "block";
     };
+
+    // if there is nickname in Student object, create element to show up nickname in modal
+    if (students[i].nickName != "") {
+      const span_head = document.createElement("span");
+      span_head.textContent = "Nickname : ";
+      const span_blank = document.createElement("span");
+      span_blank.classList.add("modal_nickname");
+      HTML.modal_if_nickname.appendChild(span_head);
+      HTML.modal_if_nickname.appendChild(span_blank);
+      document.querySelector(".modal_nickname").innerHTML =
+        students[i].nickName;
+    }
   });
 
   //if clicks close button on modal
   HTML.modal_close.onclick = function() {
     HTML.modal_name.innerHTML = "";
+    HTML.modal_gender.innerHTML = "";
     HTML.modal_house.innerHTML = "";
+    HTML.modal_blood.innerHTML = "";
     HTML.modal_content.dataset.theme = "";
+    while (HTML.modal_if_nickname.hasChildNodes())
+      HTML.modal_if_nickname.removeChild(HTML.modal_if_nickname.firstChild);
     HTML.modal.style.display = "none";
   };
 
@@ -220,8 +245,12 @@ function setting() {
   window.onclick = function(e) {
     if (e.target == HTML.modal) {
       HTML.modal_name.innerHTML = "";
+      HTML.modal_gender.innerHTML = "";
       HTML.modal_house.innerHTML = "";
+      HTML.modal_blood.innerHTML = "";
       HTML.modal_content.dataset.theme = "";
+      while (HTML.modal_if_nickname.hasChildNodes())
+        HTML.modal_if_nickname.removeChild(HTML.modal_if_nickname.firstChild);
       HTML.modal.style.display = "none";
     }
   };
