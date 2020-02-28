@@ -225,7 +225,7 @@ function setting() {
   HTML.modal_name = document.querySelector(".modal_name");
   HTML.modal_gender = document.querySelector(".modal_gender");
   HTML.modal_house = document.querySelector(".modal_house");
-  HTML.modal_if_nickname = document.querySelector(".modal_if_nickname");
+  HTML.modal_nickname = document.querySelector(".modal_nickname");
   HTML.modal_blood = document.querySelector(".modal_blood");
   HTML.modal_profile = document.querySelector(".modal_profile");
   HTML.modal_close = document.querySelector(".modal_close");
@@ -240,50 +240,32 @@ function setting() {
 
       // show up data on modal
       HTML.modal_name.innerHTML = students[i].fullname;
+      HTML.modal_nickname.innerHTML =
+        students[i].nickName === "" ? "" : `&nbsp;${students[i].nickName}`;
       HTML.modal_gender.innerHTML = students[i].gender == "boy" ? "♂" : "♀";
       HTML.modal_house.innerHTML = students[i].house;
       HTML.modal_blood.innerHTML = students[i].blood;
       HTML.modal_profile.src = students[i].profile;
       HTML.modal_content.dataset.theme = students[i].house;
       HTML.modal.style.display = "block";
-
-      // if there is nickname in Student object, create element to show up nickname in modal
-      if (students[i].nickName != "") {
-        const span_head = document.createElement("span");
-        span_head.textContent = "Nickname : ";
-        const span_blank = document.createElement("span");
-        span_blank.classList.add("modal_nickname");
-        HTML.modal_if_nickname.appendChild(span_head);
-        HTML.modal_if_nickname.appendChild(span_blank);
-        document.querySelector(".modal_nickname").innerHTML =
-          students[i].nickName;
-      }
     };
   });
 
   //if clicks close button on modal
-  HTML.modal_close.onclick = function() {
+  HTML.modal_close.addEventListener("click", closeButton);
+
+  //if clicks outside the modal, then close the modal
+  window.onclick = function(e) {
+    if (e.target == HTML.modal) closeButton();
+  };
+
+  function closeButton() {
     HTML.modal_name.innerHTML = "";
     HTML.modal_gender.innerHTML = "";
     HTML.modal_house.innerHTML = "";
     HTML.modal_blood.innerHTML = "";
+    HTML.modal_nickname.innerHTML = "";
     HTML.modal_content.dataset.theme = "";
-    while (HTML.modal_if_nickname.hasChildNodes())
-      HTML.modal_if_nickname.removeChild(HTML.modal_if_nickname.firstChild);
     HTML.modal.style.display = "none";
-  };
-
-  //if clicks outside the modal, then close the modal
-  window.onclick = function(e) {
-    if (e.target == HTML.modal) {
-      HTML.modal_name.innerHTML = "";
-      HTML.modal_gender.innerHTML = "";
-      HTML.modal_house.innerHTML = "";
-      HTML.modal_blood.innerHTML = "";
-      HTML.modal_content.dataset.theme = "";
-      while (HTML.modal_if_nickname.hasChildNodes())
-        HTML.modal_if_nickname.removeChild(HTML.modal_if_nickname.firstChild);
-      HTML.modal.style.display = "none";
-    }
-  };
+  }
 }

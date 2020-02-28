@@ -126,7 +126,17 @@ td {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.modal_content_info_name {
+  font-size: xx-large;
+}
+
+.modal_content_bottom {
   font-size: large;
+  font-weight: 500;
 }
 
 .modal_close {
