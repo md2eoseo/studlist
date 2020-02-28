@@ -29,7 +29,7 @@ const Student = {
   blood: "",
   gender: "",
   house: "",
-  fileName: "",
+  profile: "",
   desc: "",
   age: 0
 };
@@ -93,19 +93,48 @@ function prepareStudentObjects(jsonData) {
       0,
       student_fullname.indexOf(" ")
     );
-    student.lastName = student_fullname.substring(
-      student_fullname.lastIndexOf(" ") + 1
-    );
-    student.middleName = student_fullname.substring(
-      student_fullname.indexOf(" ") + 1,
-      student_fullname.lastIndexOf(" ")
-    );
+    if (student.fullname.search("-") != -1) {
+      student.lastName = student_fullname.substring(
+        student_fullname.lastIndexOf("-") + 1
+      );
+      student.middleName = student_fullname.substring(
+        student_fullname.indexOf(" ") + 1,
+        student_fullname.lastIndexOf("-")
+      );
+    } else {
+      student.lastName = student_fullname.substring(
+        student_fullname.lastIndexOf(" ") + 1
+      );
+      student.middleName = student_fullname.substring(
+        student_fullname.indexOf(" ") + 1,
+        student_fullname.lastIndexOf(" ")
+      );
+    }
+
     student.gender = jsonObject.gender;
     student.house = student_house;
     student.blood = setBloodStatus(student.lastName) ? "Half" : "Pure";
+    student.profile = setProfileName(student.lastName, student.firstName);
 
     students.push(student);
   });
+
+  function setProfileName(lastName, firstName) {
+    let sameLastName = false;
+    students.forEach(student => {
+      if (student.lastName === lastName) {
+        sameLastName = true;
+        student.profile = `profile/${lastName.toLowerCase()}_${student.firstName.toLowerCase()}.png`;
+      }
+    });
+
+    if (sameLastName)
+      return `profile/${lastName.toLowerCase()}_${firstName.toLowerCase()}.png`;
+    else
+      return `profile/${lastName.toLowerCase()}_${firstName
+        .substring(0, 1)
+        .toLowerCase()}.png`;
+  }
 
   function setBloodStatus(lastName) {
     console.log(lastName);
@@ -198,6 +227,7 @@ function setting() {
   HTML.modal_house = document.querySelector(".modal_house");
   HTML.modal_if_nickname = document.querySelector(".modal_if_nickname");
   HTML.modal_blood = document.querySelector(".modal_blood");
+  HTML.modal_profile = document.querySelector(".modal_profile");
   HTML.modal_close = document.querySelector(".modal_close");
 
   // translate textContent to img file
@@ -213,6 +243,7 @@ function setting() {
       HTML.modal_gender.innerHTML = students[i].gender == "boy" ? "♂" : "♀";
       HTML.modal_house.innerHTML = students[i].house;
       HTML.modal_blood.innerHTML = students[i].blood;
+      HTML.modal_profile.src = students[i].profile;
       HTML.modal_content.dataset.theme = students[i].house;
       HTML.modal.style.display = "block";
 
