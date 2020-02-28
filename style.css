@@ -114,6 +114,7 @@ td {
   border: 1px solid #888;
   width: 75%;
   border-radius: 20px;
+  min-width: 720px;
 }
 
 .modal_content_main {
@@ -151,6 +152,26 @@ td {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+#filter {
+  margin: 20px 0;
+}
+
+.filter_button {
+  display: inline-block;
+  margin: 0 8px 8px 0;
+  border: 1px solid #0045ff;
+  border-radius: 100px;
+  min-width: 50px;
+  text-align: center;
+  padding: 3px 16px;
+  cursor: pointer;
+}
+
+.filter_button:hover {
+  color: white;
+  background-color: #0045ff;
 }
 
 .btn_detail_img {

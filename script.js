@@ -34,6 +34,12 @@ const Student = {
   age: 0
 };
 
+const settings = {
+  filter: null,
+  sortBy: null,
+  sortDir: "asc"
+};
+
 let i = 0,
   cnt = 0,
   fileCounter = 0;
@@ -137,7 +143,6 @@ function prepareStudentObjects(jsonData) {
   }
 
   function setBloodStatus(lastName) {
-    console.log(lastName);
     const result = familiesJSON.half.find(e => e === lastName);
     if (result == undefined) return false;
     else return true;
@@ -218,6 +223,7 @@ function displayStudent(student) {
 
 function setting() {
   // querySelector Set
+  HTML.filter_button = document.querySelectorAll(".filter_button");
   HTML.text_house = document.querySelectorAll(".house");
   HTML.btn_detail = document.querySelectorAll(".btn_detail");
   HTML.modal = document.querySelector("#modal");
@@ -229,6 +235,11 @@ function setting() {
   HTML.modal_blood = document.querySelector(".modal_blood");
   HTML.modal_profile = document.querySelector(".modal_profile");
   HTML.modal_close = document.querySelector(".modal_close");
+
+  // if clicks filter only selected data
+  HTML.filter_button.forEach(btn => {
+    btn.addEventListener("click", filterButton);
+  });
 
   // translate textContent to img file
   HTML.text_house.forEach(e => (e.src = `img/${e.textContent}.PNG`));
@@ -258,6 +269,10 @@ function setting() {
   window.onclick = function(e) {
     if (e.target == HTML.modal) closeButton();
   };
+
+  function filterButton() {
+    console.log("filter button clicked");
+  }
 
   function closeButton() {
     HTML.modal_name.innerHTML = "";
