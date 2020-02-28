@@ -190,9 +190,7 @@ function displayStudent(student) {
 function setting() {
   // querySelector Set
   HTML.text_house = document.querySelectorAll(".house");
-  const texts_house = Array.from(HTML.text_house);
   HTML.btn_detail = document.querySelectorAll(".btn_detail");
-  const btns_detail = Array.from(HTML.btn_detail);
   HTML.modal = document.querySelector(".modal");
   HTML.modal_content = document.querySelector(".modal_content");
   HTML.modal_name = document.querySelector(".modal_name");
@@ -203,10 +201,10 @@ function setting() {
   HTML.modal_close = document.querySelector(".modal_close");
 
   // translate textContent to img file
-  texts_house.forEach(e => (e.src = `img/${e.textContent}.PNG`));
+  HTML.text_house.forEach(e => (e.src = `img/${e.textContent}.PNG`));
 
   // if clicks detail button
-  btns_detail.forEach((e, i) => {
+  HTML.btn_detail.forEach((e, i) => {
     e.onclick = function() {
       console.log(students[i].fullname);
 
@@ -217,20 +215,22 @@ function setting() {
       HTML.modal_blood.innerHTML = students[i].blood;
       HTML.modal_content.dataset.theme = students[i].house;
       HTML.modal.style.display = "block";
-    };
 
-    // if there is nickname in Student object, create element to show up nickname in modal
-    if (students[i].nickName != "") {
-      const span_head = document.createElement("span");
-      span_head.textContent = "Nickname : ";
-      const span_blank = document.createElement("span");
-      span_blank.classList.add("modal_nickname");
-      HTML.modal_if_nickname.appendChild(span_head);
-      HTML.modal_if_nickname.appendChild(span_blank);
-      document.querySelector(".modal_nickname").innerHTML =
-        students[i].nickName;
-    }
+      // if there is nickname in Student object, create element to show up nickname in modal
+      if (students[i].nickName != "") {
+        const span_head = document.createElement("span");
+        span_head.textContent = "Nickname : ";
+        const span_blank = document.createElement("span");
+        span_blank.classList.add("modal_nickname");
+        HTML.modal_if_nickname.appendChild(span_head);
+        HTML.modal_if_nickname.appendChild(span_blank);
+        document.querySelector(".modal_nickname").innerHTML =
+          students[i].nickName;
+      }
+    };
   });
+
+  function detailButton(e, i) {}
 
   //if clicks close button on modal
   HTML.modal_close.onclick = function() {
