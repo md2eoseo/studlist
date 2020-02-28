@@ -10,6 +10,16 @@ https://webdir.tistory.com/31
   --theme-slytherin-color: rgb(48, 163, 55);
 }
 
+#top {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  margin: 10px 10px;
+}
+
 .logo {
   width: 50px;
 }
@@ -34,7 +44,7 @@ td {
   width: 50px;
 }
 
-.modal {
+#modal {
   display: none;
   position: fixed;
   z-index: 1;

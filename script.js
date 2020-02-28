@@ -220,7 +220,7 @@ function setting() {
   // querySelector Set
   HTML.text_house = document.querySelectorAll(".house");
   HTML.btn_detail = document.querySelectorAll(".btn_detail");
-  HTML.modal = document.querySelector(".modal");
+  HTML.modal = document.querySelector("#modal");
   HTML.modal_content = document.querySelector(".modal_content");
   HTML.modal_name = document.querySelector(".modal_name");
   HTML.modal_gender = document.querySelector(".modal_gender");
