@@ -104,21 +104,19 @@ td {
   border: 1px solid #888;
   width: 75%;
   border-radius: 20px;
-  /* flex-direction: column; */
+}
+
+.modal_content_main {
+  display: flex;
+  flex-direction: column;
 }
 
 .modal_content_top {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-}
-
-.modal_content_main {
-  display: block;
+  justify-content: space-between;
   font-size: large;
-}
-
-.modal_content_profile {
 }
 
 .modal_close {

@@ -230,8 +230,6 @@ function setting() {
     };
   });
 
-  function detailButton(e, i) {}
-
   //if clicks close button on modal
   HTML.modal_close.onclick = function() {
     HTML.modal_name.innerHTML = "";
