@@ -47,6 +47,40 @@ let i = 0,
 function start() {
   console.log("start()");
 
+  HTML.filter_button = document.querySelectorAll(".filter_button");
+  HTML.modal = document.querySelector("#modal");
+  HTML.modal_content = document.querySelector(".modal_content");
+  HTML.modal_name = document.querySelector(".modal_name");
+  HTML.modal_gender = document.querySelector(".modal_gender");
+  HTML.modal_house = document.querySelector(".modal_house");
+  HTML.modal_nickname = document.querySelector(".modal_nickname");
+  HTML.modal_blood = document.querySelector(".modal_blood");
+  HTML.modal_profile = document.querySelector(".modal_profile");
+  HTML.modal_close = document.querySelector(".modal_close");
+
+  // if clicks filter only selected data
+  HTML.filter_button.forEach(btn => {
+    btn.addEventListener("click", filterButton);
+  });
+
+  //if clicks close button on modal
+  HTML.modal_close.addEventListener("click", closeButton);
+
+  //if clicks outside the modal, then close the modal
+  window.onclick = function(e) {
+    if (e.target == HTML.modal) closeButton();
+  };
+
+  function closeButton() {
+    HTML.modal_name.innerHTML = "";
+    HTML.modal_gender.innerHTML = "";
+    HTML.modal_house.innerHTML = "";
+    HTML.modal_blood.innerHTML = "";
+    HTML.modal_nickname.innerHTML = "";
+    HTML.modal_content.dataset.theme = "";
+    HTML.modal.style.display = "none";
+  }
+
   fileCounter = 0;
   loadStuentsJSON(url[0]);
   loadFamiliesJSON(url[1]);
@@ -201,8 +235,6 @@ function displayList(students) {
 
   // build a new list
   students.forEach(displayStudent);
-
-  setting();
 }
 
 function displayStudent(student) {
@@ -217,85 +249,50 @@ function displayStudent(student) {
   clone.querySelector("[data-field=house]").textContent = student.house;
   clone.querySelector("[data-field=fullname]").textContent = student.fullname;
 
+  //----------------------------------------------------------------------------------------------------------------
+  // querySelector Set
+  HTML.text_house = clone.querySelector(".house");
+  HTML.detail_button = clone.querySelector(".detail_button");
+
+  // translate textContent to img file
+  HTML.text_house.src = `img/${HTML.text_house.textContent}.PNG`;
+
+  // if clicks detail button
+  HTML.detail_button.addEventListener("click", function() {
+    console.log(students[i].fullname);
+
+    // show up data on modal
+    HTML.modal_name.innerHTML = students[i].fullname;
+    HTML.modal_nickname.innerHTML =
+      students[i].nickName === "" ? "" : `&nbsp;${students[i].nickName}`;
+    HTML.modal_gender.innerHTML = students[i].gender == "boy" ? "♂" : "♀";
+    HTML.modal_house.innerHTML = students[i].house;
+    HTML.modal_blood.innerHTML = students[i].blood;
+    HTML.modal_profile.src = students[i].profile;
+    HTML.modal_content.dataset.theme = students[i].house;
+    HTML.modal.style.display = "block";
+  });
+  //----------------------------------------------------------------------------------------------------------------
+
   // append clone to list
   document.querySelector("#list tbody").appendChild(clone);
 }
 
-function setting() {
-  // querySelector Set
-  HTML.filter_button = document.querySelectorAll(".filter_button");
-  HTML.text_house = document.querySelectorAll(".house");
-  HTML.detail_button = document.querySelectorAll(".detail_button");
-  HTML.modal = document.querySelector("#modal");
-  HTML.modal_content = document.querySelector(".modal_content");
-  HTML.modal_name = document.querySelector(".modal_name");
-  HTML.modal_gender = document.querySelector(".modal_gender");
-  HTML.modal_house = document.querySelector(".modal_house");
-  HTML.modal_nickname = document.querySelector(".modal_nickname");
-  HTML.modal_blood = document.querySelector(".modal_blood");
-  HTML.modal_profile = document.querySelector(".modal_profile");
-  HTML.modal_close = document.querySelector(".modal_close");
+function filterStudentsByHouse(house) {
+  const result = students.filter(filterFunction);
 
-  // if clicks filter only selected data
-  HTML.filter_button.forEach(btn => {
-    btn.addEventListener("click", filterButton);
-  });
-
-  // translate textContent to img file
-  HTML.text_house.forEach(e => (e.src = `img/${e.textContent}.PNG`));
-
-  // if clicks detail button
-  HTML.detail_button.forEach((e, i) => {
-    e.onclick = function() {
-      console.log(students[i].fullname);
-
-      // show up data on modal
-      HTML.modal_name.innerHTML = students[i].fullname;
-      HTML.modal_nickname.innerHTML =
-        students[i].nickName === "" ? "" : `&nbsp;${students[i].nickName}`;
-      HTML.modal_gender.innerHTML = students[i].gender == "boy" ? "♂" : "♀";
-      HTML.modal_house.innerHTML = students[i].house;
-      HTML.modal_blood.innerHTML = students[i].blood;
-      HTML.modal_profile.src = students[i].profile;
-      HTML.modal_content.dataset.theme = students[i].house;
-      HTML.modal.style.display = "block";
-    };
-  });
-
-  //if clicks close button on modal
-  HTML.modal_close.addEventListener("click", closeButton);
-
-  //if clicks outside the modal, then close the modal
-  window.onclick = function(e) {
-    if (e.target == HTML.modal) closeButton();
-  };
-
-  function filterStudentsByHouse(house) {
-    const result = students.filter(filterFunction);
-
-    function filterFunction(student) {
-      if (student.house === house) return true;
-      else return false;
-    }
-    return result;
+  function filterFunction(student) {
+    if (student.house === house) return true;
+    else return false;
   }
+  return result;
+}
 
-  function filterButton(e) {
-    let selected_type = e.target.dataset.type,
-      selected_data = e.target.dataset.house;
-    console.log("filter type : " + selected_data);
-    if (selected_data === "*") displayList(students);
-    else if (selected_type === "house")
-      displayList(filterStudentsByHouse(selected_data));
-  }
-
-  function closeButton() {
-    HTML.modal_name.innerHTML = "";
-    HTML.modal_gender.innerHTML = "";
-    HTML.modal_house.innerHTML = "";
-    HTML.modal_blood.innerHTML = "";
-    HTML.modal_nickname.innerHTML = "";
-    HTML.modal_content.dataset.theme = "";
-    HTML.modal.style.display = "none";
-  }
+function filterButton(e) {
+  let selected_type = e.target.dataset.type,
+    selected_data = e.target.dataset.house;
+  console.log("filter type : " + selected_data);
+  if (selected_data === "*") displayList(students);
+  else if (selected_type === "house")
+    displayList(filterStudentsByHouse(selected_data));
 }
