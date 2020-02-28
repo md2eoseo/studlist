@@ -190,10 +190,10 @@ function prepareStudentObjects(jsonData) {
     );
   }
 
-  displayList();
+  displayList(students);
 }
 
-function displayList() {
+function displayList(students) {
   console.log("displayList()");
 
   // clear the list
@@ -225,7 +225,7 @@ function setting() {
   // querySelector Set
   HTML.filter_button = document.querySelectorAll(".filter_button");
   HTML.text_house = document.querySelectorAll(".house");
-  HTML.btn_detail = document.querySelectorAll(".btn_detail");
+  HTML.detail_button = document.querySelectorAll(".detail_button");
   HTML.modal = document.querySelector("#modal");
   HTML.modal_content = document.querySelector(".modal_content");
   HTML.modal_name = document.querySelector(".modal_name");
@@ -245,7 +245,7 @@ function setting() {
   HTML.text_house.forEach(e => (e.src = `img/${e.textContent}.PNG`));
 
   // if clicks detail button
-  HTML.btn_detail.forEach((e, i) => {
+  HTML.detail_button.forEach((e, i) => {
     e.onclick = function() {
       console.log(students[i].fullname);
 
@@ -270,8 +270,23 @@ function setting() {
     if (e.target == HTML.modal) closeButton();
   };
 
-  function filterButton() {
-    console.log("filter button clicked");
+  function filterStudentsByHouse(house) {
+    const result = students.filter(filterFunction);
+
+    function filterFunction(student) {
+      if (student.house === house) return true;
+      else return false;
+    }
+    return result;
+  }
+
+  function filterButton(e) {
+    let selected_type = e.target.dataset.type,
+      selected_data = e.target.dataset.house;
+    console.log("filter type : " + selected_data);
+    if (selected_data === "*") displayList(students);
+    else if (selected_type === "house")
+      displayList(filterStudentsByHouse(selected_data));
   }
 
   function closeButton() {
