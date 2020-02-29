@@ -36,7 +36,7 @@ const Student = {
 
 const settings = {
   filter: "*",
-  sortBy: "firstName",
+  sortBy: null,
   sortDir: "asc"
 };
 
@@ -44,7 +44,7 @@ let cnt = 0,
   fileCounter = 0;
 
 function start() {
-  console.log("start()");
+  // console.log("start()");
 
   HTML.filter_button = document.querySelectorAll(".filter_button");
   HTML.sort_button = document.querySelectorAll(".sort_button");
@@ -92,14 +92,14 @@ function start() {
 }
 
 async function loadStuentsJSON(url) {
-  console.log("loadStuentsJSON()");
+  // console.log("loadStuentsJSON()");
   const response = await fetch(url);
   const jsonData = await response.json();
   studentsJSON = jsonData;
   itsDone();
 }
 async function loadFamiliesJSON(url) {
-  console.log("loadFamiliesJSON()");
+  // console.log("loadFamiliesJSON()");
   const response = await fetch(url);
   const jsonData = await response.json();
   familiesJSON = jsonData;
@@ -108,13 +108,13 @@ async function loadFamiliesJSON(url) {
 
 function itsDone() {
   if (++fileCounter == url.length) {
-    console.log("all files loaded");
+    // console.log("all files loaded");
     prepareStudentObjects(studentsJSON);
   }
 }
 
 function prepareStudentObjects(jsonData) {
-  console.log("prepareStudentObjects()");
+  // console.log("prepareStudentObjects()");
 
   jsonData.forEach(jsonObject => {
     // Create new object with cleaned data - and store that in the students array
@@ -234,7 +234,7 @@ function prepareStudentObjects(jsonData) {
 }
 
 function displayList(students) {
-  console.log("displayList()");
+  // console.log("displayList()");
 
   // clear the list
   document.querySelector("#list tbody").innerHTML = "";
@@ -244,7 +244,7 @@ function displayList(students) {
 }
 
 function displayStudent(student) {
-  console.log("displayStudent()");
+  // console.log("displayStudent()");
 
   // create clone
   const clone = document
@@ -265,7 +265,7 @@ function displayStudent(student) {
 
   // if clicks detail button
   HTML.detail_button.addEventListener("click", function() {
-    console.log(student.fullname);
+    // console.log(student.fullname);
 
     // show up data on modal
     HTML.modal_name.innerHTML = student.fullname;
@@ -299,11 +299,18 @@ function filterStudentsByHouse(house) {
 function filterButton(e) {
   const selected_type = e.target.dataset.type;
 
-  document
-    .querySelector(`[data-sort="${settings.sortBy}"]`)
-    .classList.remove("clicked");
-  document.querySelector(`[data-sort="${settings.sortBy}"]`).dataset.action =
-    "";
+  if (settings.sortBy != null) {
+    document
+      .querySelector(`[data-sort="${settings.sortBy}"]`)
+      .classList.remove("clicked");
+    document.querySelector(`[data-sort="${settings.sortBy}"]`).dataset.action =
+      "";
+    document.querySelector(
+      `[data-sort="${settings.sortBy}"]`
+    ).dataset.sortDirection = "asc";
+  }
+  settings.sortBy = null;
+  settings.sortDir = "asc";
 
   document
     .querySelector(`[data-filter="${settings.filter}"]`)
@@ -312,64 +319,43 @@ function filterButton(e) {
   document
     .querySelector(`[data-filter="${settings.filter}"]`)
     .classList.add("clicked");
-  console.log("filter type : " + settings.filter);
   if (settings.filter === "*") displayList(students);
   else if (selected_type === "house")
     displayList(filterStudentsByHouse(settings.filter));
 }
 
-// function setSorting(sortby) {
-//   // toggle if already in use
-//   if (sortby === settings.sortBy)
-//     settings.sortDir = settings.sortDir === "asc" ? "desc" : "asc";
-//   else settings.sortBy = sortby;
-
-//   document.querySelectorAll("[data-action=sort]").forEach() --> refactoring
-// }
-
-// function sortList(list) {
-//   const dir = settings.sortDir === "desc" ? 1 : -1;
-//   list.sort((a, b) =>
-//     a[settings.sortBy] < b[settings.sortBy] ? dir : dir * -1
-//   );
-// }
-
-function sortStudentsByData(sortBy, sortDir) {
+function sortStudentsByData() {
   const filtered_list = filterStudentsByHouse(settings.filter);
+  const dir = settings.sortDir === "desc" ? 1 : -1;
 
-  if (sortDir === "asc") return filtered_list.sort(compareAscFunction);
-  else if (sortDir === "desc") return filtered_list.sort(compareDescFunction);
-
-  function compareAscFunction(a, b) {
-    if (a[sortBy] < b[sortBy]) return -1;
-    else if (a[sortBy] === b[sortBy]) return 0;
-    else return 1;
-  }
-  function compareDescFunction(a, b) {
-    if (a[sortBy] > b[sortBy]) return -1;
-    else if (a[sortBy] === b[sortBy]) return 0;
-    else return 1;
-  }
+  return filtered_list.sort((a, b) =>
+    a[settings.sortBy] < b[settings.sortBy] ? dir : dir * -1
+  );
 }
 
 function sortButton(e) {
   if (settings.sortBy != e.target.dataset.sort) {
+    if (settings.sortBy != null) {
+      document
+        .querySelector(`[data-sort="${settings.sortBy}"]`)
+        .classList.remove("clicked");
+      document.querySelector(
+        `[data-sort="${settings.sortBy}"]`
+      ).dataset.action = "";
+    }
+    settings.sortBy = e.target.dataset.sort;
+    e.target.dataset.sortDirection = "asc";
+    settings.sortDir = "asc";
+
     document
       .querySelector(`[data-sort="${settings.sortBy}"]`)
-      .classList.remove("clicked");
-    document.querySelector(`[data-sort="${settings.sortBy}"]`).dataset.action =
-      "";
+      .classList.add("clicked");
+  } else {
+    e.target.dataset.sortDirection =
+      settings.sortDir === "asc" ? "desc" : "asc";
+    settings.sortDir = e.target.dataset.sortDirection;
   }
 
-  if (settings.sortDir === "asc") e.target.dataset.sortDirection = "desc";
-  else if (settings.sortDir === "desc") e.target.dataset.sortDirection = "asc";
-
-  settings.sortBy = e.target.dataset.sort;
-  settings.sortDir = e.target.dataset.sortDirection;
   e.target.dataset.action = "sorted";
-  document
-    .querySelector(`[data-sort="${settings.sortBy}"]`)
-    .classList.add("clicked");
-
-  displayList(sortStudentsByData(settings.sortBy, settings.sortDir));
+  displayList(sortStudentsByData());
 }
