@@ -40,8 +40,7 @@ const settings = {
   sortDir: "asc"
 };
 
-let i = 0,
-  cnt = 0,
+let cnt = 0,
   fileCounter = 0;
 
 function start() {
@@ -183,7 +182,8 @@ function prepareStudentObjects(jsonData) {
   }
 
   function fullnameCapitalization(fullname) {
-    let capitalizedFullname = "";
+    let i = 0,
+      capitalizedFullname = "";
     for (i = 0; i < fullname.length - 1; i++) {
       if (fullname[i] == " " || fullname[i] == "-" || fullname[i] == '"') {
         capitalizedFullname += fullname[i];
@@ -259,17 +259,17 @@ function displayStudent(student) {
 
   // if clicks detail button
   HTML.detail_button.addEventListener("click", function() {
-    console.log(students[i].fullname);
+    console.log(student.fullname);
 
     // show up data on modal
-    HTML.modal_name.innerHTML = students[i].fullname;
+    HTML.modal_name.innerHTML = student.fullname;
     HTML.modal_nickname.innerHTML =
-      students[i].nickName === "" ? "" : `&nbsp;${students[i].nickName}`;
-    HTML.modal_gender.innerHTML = students[i].gender == "boy" ? "♂" : "♀";
-    HTML.modal_house.innerHTML = students[i].house;
-    HTML.modal_blood.innerHTML = students[i].blood;
-    HTML.modal_profile.src = students[i].profile;
-    HTML.modal_content.dataset.theme = students[i].house;
+      student.nickName === "" ? "" : `&nbsp;${student.nickName}`;
+    HTML.modal_gender.innerHTML = student.gender == "boy" ? "♂" : "♀";
+    HTML.modal_house.innerHTML = student.house;
+    HTML.modal_blood.innerHTML = student.blood;
+    HTML.modal_profile.src = student.profile;
+    HTML.modal_content.dataset.theme = student.house;
     HTML.modal.style.display = "block";
   });
   //----------------------------------------------------------------------------------------------------------------
