@@ -17,18 +17,33 @@
       </div>
       <div id="filter">
         Filters:
-        <span class="filter_button" data-type="house" data-house="*">All</span>
-        <span class="filter_button" data-type="house" data-house="Gryffindor"
+        <span class="filter_button clicked" data-type="house" data-filter="*">All</span>
+        <span class="filter_button" data-type="house" data-filter="Gryffindor"
           >Gryffindor</span
         >
-        <span class="filter_button" data-type="house" data-house="Hufflepuff"
+        <span class="filter_button" data-type="house" data-filter="Hufflepuff"
           >Hufflepuff</span
         >
-        <span class="filter_button" data-type="house" data-house="Ravenclaw"
+        <span class="filter_button" data-type="house" data-filter="Ravenclaw"
           >Ravenclaw</span
         >
-        <span class="filter_button" data-type="house" data-house="Slytherin"
+        <span class="filter_button" data-type="house" data-filter="Slytherin"
           >Slytherin</span
+        >
+      </div>
+      <div id="sort">
+        Sort By:
+        <span
+          class="sort_button"
+          data-sort-direction="asc"
+          data-sort="firstName"
+          >First Name</span
+        >
+        <span class="sort_button" data-sort-direction="asc" data-sort="lastName"
+          >Last Name</span
+        >
+        <span class="sort_button" data-sort-direction="asc" data-sort="house"
+          >House</span
         >
       </div>
       <table id="list">

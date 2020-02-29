@@ -35,7 +35,7 @@ const Student = {
 };
 
 const settings = {
-  filter: null,
+  filter: "*",
   sortBy: null,
   sortDir: "asc"
 };
@@ -290,7 +290,13 @@ function filterStudentsByHouse(house) {
 
 function filterButton(e) {
   const selected_type = e.target.dataset.type;
-  settings.filter = e.target.dataset.house;
+  document
+    .querySelector(`[data-filter="${settings.filter}"]`)
+    .classList.remove("clicked");
+  settings.filter = e.target.dataset.filter;
+  document
+    .querySelector(`[data-filter="${settings.filter}"]`)
+    .classList.add("clicked");
   console.log("filter type : " + settings.filter);
   if (settings.filter === "*") displayList(students);
   else if (selected_type === "house")
