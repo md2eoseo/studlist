@@ -36,7 +36,7 @@ const Student = {
 
 const settings = {
   filter: "*",
-  sortBy: null,
+  sortBy: "firstName",
   sortDir: "asc"
 };
 
@@ -47,6 +47,7 @@ function start() {
   console.log("start()");
 
   HTML.filter_button = document.querySelectorAll(".filter_button");
+  HTML.sort_button = document.querySelectorAll(".sort_button");
   HTML.modal = document.querySelector("#modal");
   HTML.modal_content = document.querySelector(".modal_content");
   HTML.modal_name = document.querySelector(".modal_name");
@@ -60,6 +61,11 @@ function start() {
   // if clicks filter only selected data
   HTML.filter_button.forEach(btn => {
     btn.addEventListener("click", filterButton);
+  });
+
+  // if clicks sort selected data (toggle asc ↔ desc)
+  HTML.sort_button.forEach(btn => {
+    btn.addEventListener("click", sortButton);
   });
 
   //if clicks close button on modal
@@ -279,7 +285,9 @@ function displayStudent(student) {
 }
 
 function filterStudentsByHouse(house) {
-  const result = students.filter(filterFunction);
+  let result;
+  if (house === "*") result = students;
+  else result = students.filter(filterFunction);
 
   function filterFunction(student) {
     if (student.house === house) return true;
@@ -290,6 +298,13 @@ function filterStudentsByHouse(house) {
 
 function filterButton(e) {
   const selected_type = e.target.dataset.type;
+
+  document
+    .querySelector(`[data-sort="${settings.sortBy}"]`)
+    .classList.remove("clicked");
+  document.querySelector(`[data-sort="${settings.sortBy}"]`).dataset.action =
+    "";
+
   document
     .querySelector(`[data-filter="${settings.filter}"]`)
     .classList.remove("clicked");
@@ -301,4 +316,60 @@ function filterButton(e) {
   if (settings.filter === "*") displayList(students);
   else if (selected_type === "house")
     displayList(filterStudentsByHouse(settings.filter));
+}
+
+// function setSorting(sortby) {
+//   // toggle if already in use
+//   if (sortby === settings.sortBy)
+//     settings.sortDir = settings.sortDir === "asc" ? "desc" : "asc";
+//   else settings.sortBy = sortby;
+
+//   document.querySelectorAll("[data-action=sort]").forEach() --> refactoring
+// }
+
+// function sortList(list) {
+//   const dir = settings.sortDir === "desc" ? 1 : -1;
+//   list.sort((a, b) =>
+//     a[settings.sortBy] < b[settings.sortBy] ? dir : dir * -1
+//   );
+// }
+
+function sortStudentsByData(sortBy, sortDir) {
+  const filtered_list = filterStudentsByHouse(settings.filter);
+
+  if (sortDir === "asc") return filtered_list.sort(compareAscFunction);
+  else if (sortDir === "desc") return filtered_list.sort(compareDescFunction);
+
+  function compareAscFunction(a, b) {
+    if (a[sortBy] < b[sortBy]) return -1;
+    else if (a[sortBy] === b[sortBy]) return 0;
+    else return 1;
+  }
+  function compareDescFunction(a, b) {
+    if (a[sortBy] > b[sortBy]) return -1;
+    else if (a[sortBy] === b[sortBy]) return 0;
+    else return 1;
+  }
+}
+
+function sortButton(e) {
+  if (settings.sortBy != e.target.dataset.sort) {
+    document
+      .querySelector(`[data-sort="${settings.sortBy}"]`)
+      .classList.remove("clicked");
+    document.querySelector(`[data-sort="${settings.sortBy}"]`).dataset.action =
+      "";
+  }
+
+  if (settings.sortDir === "asc") e.target.dataset.sortDirection = "desc";
+  else if (settings.sortDir === "desc") e.target.dataset.sortDirection = "asc";
+
+  settings.sortBy = e.target.dataset.sort;
+  settings.sortDir = e.target.dataset.sortDirection;
+  e.target.dataset.action = "sorted";
+  document
+    .querySelector(`[data-sort="${settings.sortBy}"]`)
+    .classList.add("clicked");
+
+  displayList(sortStudentsByData(settings.sortBy, settings.sortDir));
 }

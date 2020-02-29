@@ -204,6 +204,14 @@ td {
   background-color: #7343ac;
 }
 
+#sort [data-sort-direction="asc"][data-action="sorted"]:after {
+  content: " ↓";
+}
+
+#sort [data-sort-direction="desc"][data-action="sorted"]:after {
+  content: " ↑";
+}
+
 .detail_button_img {
   width: 30px;
 }
