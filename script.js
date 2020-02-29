@@ -289,10 +289,10 @@ function filterStudentsByHouse(house) {
 }
 
 function filterButton(e) {
-  let selected_type = e.target.dataset.type,
-    selected_data = e.target.dataset.house;
-  console.log("filter type : " + selected_data);
-  if (selected_data === "*") displayList(students);
+  const selected_type = e.target.dataset.type;
+  settings.filter = e.target.dataset.house;
+  console.log("filter type : " + settings.filter);
+  if (settings.filter === "*") displayList(students);
   else if (selected_type === "house")
-    displayList(filterStudentsByHouse(selected_data));
+    displayList(filterStudentsByHouse(settings.filter));
 }
