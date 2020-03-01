@@ -138,6 +138,7 @@ td {
 .modal_content_bottom {
   font-size: large;
   font-weight: 500;
+  display: flex;
 }
 
 .modal_close {
@@ -214,4 +215,42 @@ td {
 
 .detail_button_img {
   width: 30px;
+}
+
+/******** DIALOG styling **********/
+
+.alert {
+  display: none;
+  z-index: 100;
+}
+
+.alert.show {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.alertcontent {
+  background-color: rgb(233, 233, 255);
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 10vw 8vw 8vw 8vw;
+  position: relative;
+}
+
+.alert h1 {
+  margin: 0;
+  font-size: 130%;
+}
+
+.alert h2 {
+  margin: 0.5em 0;
+  font-size: 110%;
+  font-weight: lighter;
+  color: red;
 }

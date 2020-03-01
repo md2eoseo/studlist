@@ -31,7 +31,8 @@ const Student = {
   house: "",
   profile: "",
   desc: "",
-  age: 0
+  age: 0,
+  expelled: false
 };
 
 const settings = {
@@ -57,6 +58,10 @@ function start() {
   HTML.modal_blood = document.querySelector(".modal_blood");
   HTML.modal_profile = document.querySelector(".modal_profile");
   HTML.modal_close = document.querySelector(".modal_close");
+  HTML.expel_button = document.querySelector(".expel_button");
+  HTML.expel_alert = document.querySelector("#expel");
+  HTML.expel_yes = document.querySelector("#expel [data-action='expel_yes']");
+  HTML.expel_no = document.querySelector("#expel [data-action='expel_no']");
 
   // if clicks filter only selected data
   HTML.filter_button.forEach(btn => {
@@ -68,6 +73,9 @@ function start() {
     btn.addEventListener("click", sortButton);
   });
 
+  // if clicks no button on alert
+  HTML.expel_no.addEventListener("click", noButton);
+
   //if clicks close button on modal
   HTML.modal_close.addEventListener("click", closeButton);
 
@@ -75,6 +83,10 @@ function start() {
   window.onclick = function(e) {
     if (e.target == HTML.modal) closeButton();
   };
+
+  function noButton() {
+    HTML.expel_alert.classList.remove("show");
+  }
 
   function closeButton() {
     HTML.modal_name.innerHTML = "";
@@ -84,6 +96,8 @@ function start() {
     HTML.modal_nickname.innerHTML = "";
     HTML.modal_content.dataset.theme = "";
     HTML.modal.style.display = "none";
+
+    HTML.expel_button.removeEventListener("click", expelButton);
   }
 
   fileCounter = 0;
@@ -247,6 +261,9 @@ function displayList(students) {
 function displayStudent(student) {
   // console.log("displayStudent()");
 
+  // if its expelled student, don't show up on the list
+  if (student.expelled === true) return;
+
   // create clone
   const clone = document
     .querySelector("template#student")
@@ -268,6 +285,11 @@ function displayStudent(student) {
   HTML.detail_button.addEventListener("click", function() {
     // console.log(student.fullname);
 
+    // TODO: activate expel button (remove, add EventListener)
+    HTML.expel_button.addEventListener("click", function() {
+      expelButton(student);
+    });
+
     // show up data on modal
     HTML.modal_name.innerHTML = student.fullname;
     HTML.modal_nickname.innerHTML =
@@ -283,6 +305,21 @@ function displayStudent(student) {
 
   // append clone to list
   document.querySelector("#list tbody").appendChild(clone);
+}
+
+function expelButton(student) {
+  HTML.expel_alert.classList.add("show");
+  HTML.expel_yes.addEventListener("click", expelYes);
+
+  function expelYes() {
+    console.log("Expel YesButton!!");
+    student.expelled = true;
+    HTML.expel_alert.classList.remove("show");
+    setTimeout(function() {
+      HTML.expel_yes.removeEventListener("click", expelYes);
+    }, 1000);
+    displayList(students);
+  }
 }
 
 function filterStudentsByHouse(house) {
