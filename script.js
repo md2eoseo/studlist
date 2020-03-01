@@ -365,7 +365,11 @@ function filterButton(e) {
   document
     .querySelector(`[data-filter="${settings.filter}"]`)
     .classList.add("clicked");
-  displayListWithCurrentSetting();
+  if (settings.filter === "*") displayList(students);
+  else if (settings.typeOfFilter === "house")
+    displayList(filterStudentsByHouse(settings.filter));
+  else if (settings.typeOfFilter === "expelled")
+    displayList(filterExpelledStudents());
 }
 
 // function displayListWithCurrentSetting() {
