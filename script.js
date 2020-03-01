@@ -36,6 +36,7 @@ const Student = {
 };
 
 const settings = {
+  typeOfFilter: null,
   filter: "*",
   sortBy: null,
   sortDir: "asc"
@@ -73,6 +74,9 @@ function start() {
     btn.addEventListener("click", sortButton);
   });
 
+  // activate expel button (remove, add EventListener)
+  HTML.expel_button.addEventListener("click", expelButton);
+
   // if clicks no button on alert
   HTML.expel_no.addEventListener("click", noButton);
 
@@ -96,8 +100,6 @@ function start() {
     HTML.modal_nickname.innerHTML = "";
     HTML.modal_content.dataset.theme = "";
     HTML.modal.style.display = "none";
-
-    HTML.expel_button.removeEventListener("click", expelButton);
   }
 
   fileCounter = 0;
@@ -283,11 +285,6 @@ function displayStudent(student) {
 
   // if clicks detail button
   HTML.detail_button.addEventListener("click", function() {
-    // activate expel button (remove, add EventListener)
-    HTML.expel_button.addEventListener("click", function() {
-      expelButton(student);
-    });
-
     // show up data on modal
     if (student.expelled) HTML.expel_button.style.display = "none";
     HTML.modal_name.innerHTML = student.fullname;
@@ -298,6 +295,7 @@ function displayStudent(student) {
     HTML.modal_blood.innerHTML = student.blood;
     HTML.modal_profile.src = student.profile;
     HTML.modal_content.dataset.theme = student.house;
+    HTML.expel_button.dataset.student = student.fullname;
     HTML.modal.style.display = "block";
   });
 
@@ -305,7 +303,10 @@ function displayStudent(student) {
   document.querySelector("#list tbody").appendChild(clone);
 }
 
-function expelButton(student) {
+function expelButton(e) {
+  const student = students.find(
+    ele => ele.fullname === e.target.dataset.student
+  );
   HTML.expel_alert.classList.add("show");
   HTML.expel_yes.addEventListener("click", expelYes);
 
@@ -313,11 +314,9 @@ function expelButton(student) {
     console.log(student.fullname);
     student.expelled = true;
     HTML.expel_alert.classList.remove("show");
-    setTimeout(function() {
-      HTML.expel_yes.removeEventListener("click", expelYes);
-    }, 1000);
+    HTML.expel_yes.removeEventListener("click", expelYes);
     HTML.modal.style.display = "none";
-    displayList(students);
+    displayListWithCurrentSetting();
   }
 }
 
@@ -344,7 +343,7 @@ function filterExpelledStudents() {
 }
 
 function filterButton(e) {
-  const selected_type = e.target.dataset.type;
+  settings.typeOfFilter = e.target.dataset.type;
 
   if (settings.sortBy != null) {
     document
@@ -366,10 +365,15 @@ function filterButton(e) {
   document
     .querySelector(`[data-filter="${settings.filter}"]`)
     .classList.add("clicked");
+  displayListWithCurrentSetting();
+}
+
+function displayListWithCurrentSetting() {
   if (settings.filter === "*") displayList(students);
-  else if (selected_type === "house")
+  else if (settings.typeOfFilter === "house")
     displayList(filterStudentsByHouse(settings.filter));
-  else if (selected_type === "expelled") displayList(filterExpelledStudents());
+  else if (settings.typeOfFilter === "expelled")
+    displayList(filterExpelledStudents());
 }
 
 function sortStudentsByData() {
