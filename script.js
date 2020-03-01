@@ -274,7 +274,6 @@ function displayStudent(student) {
   clone.querySelector("[data-field=house]").textContent = student.house;
   clone.querySelector("[data-field=fullname]").textContent = student.fullname;
 
-  //----------------------------------------------------------------------------------------------------------------
   // querySelector Set
   HTML.text_house = clone.querySelector(".house");
   HTML.detail_button = clone.querySelector(".detail_button");
@@ -284,14 +283,13 @@ function displayStudent(student) {
 
   // if clicks detail button
   HTML.detail_button.addEventListener("click", function() {
-    // console.log(student.fullname);
-
-    // TODO: activate expel button (remove, add EventListener)
+    // activate expel button (remove, add EventListener)
     HTML.expel_button.addEventListener("click", function() {
       expelButton(student);
     });
 
     // show up data on modal
+    if (student.expelled) HTML.expel_button.style.display = "none";
     HTML.modal_name.innerHTML = student.fullname;
     HTML.modal_nickname.innerHTML =
       student.nickName === "" ? "" : `&nbsp;${student.nickName}`;
@@ -302,7 +300,6 @@ function displayStudent(student) {
     HTML.modal_content.dataset.theme = student.house;
     HTML.modal.style.display = "block";
   });
-  //----------------------------------------------------------------------------------------------------------------
 
   // append clone to list
   document.querySelector("#list tbody").appendChild(clone);
@@ -319,6 +316,7 @@ function expelButton(student) {
     setTimeout(function() {
       HTML.expel_yes.removeEventListener("click", expelYes);
     }, 1000);
+    HTML.modal.style.display = "none";
     displayList(students);
   }
 }
