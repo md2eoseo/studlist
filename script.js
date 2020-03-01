@@ -34,7 +34,8 @@ const Student = {
   profile: "",
   desc: [],
   age: 0,
-  expelled: false
+  expelled: false,
+  squad: false
 };
 
 const settings = {
@@ -62,10 +63,16 @@ function start() {
   HTML.modal_profile = document.querySelector(".modal_profile");
   HTML.modal_desc = document.querySelector(".modal_desc");
   HTML.modal_close = document.querySelector(".modal_close");
+  HTML.modal_buttons = document.querySelector(".modal_buttons");
   HTML.expel_button = document.querySelector(".expel_button");
   HTML.expel_alert = document.querySelector("#expel");
   HTML.expel_yes = document.querySelector("#expel [data-action='expel_yes']");
-  HTML.expel_no = document.querySelector("#expel [data-action='expel_no']");
+  HTML.squad_button = document.querySelector(".squad_button");
+  HTML.squad_alert = document.querySelector("#squad");
+  HTML.squad_toggle = document.querySelector(
+    "#squad [data-action='squad_toggle']"
+  );
+  HTML.no_button = document.querySelectorAll("[data-action='no_button']");
 
   // if clicks filter only selected data
   HTML.filter_button.forEach(btn => {
@@ -80,8 +87,11 @@ function start() {
   // activate expel button (remove, add EventListener)
   HTML.expel_button.addEventListener("click", expelButton);
 
+  // if clicks squad button
+  HTML.squad_button.addEventListener("click", squadButton);
+
   // if clicks no button on alert
-  HTML.expel_no.addEventListener("click", noButton);
+  HTML.no_button.forEach(ele => ele.addEventListener("click", noButton));
 
   //if clicks close button on modal
   HTML.modal_close.addEventListener("click", closeButton);
@@ -93,6 +103,7 @@ function start() {
 
   function noButton() {
     HTML.expel_alert.classList.remove("show");
+    HTML.squad_alert.classList.remove("show");
   }
 
   function closeButton() {
@@ -101,6 +112,7 @@ function start() {
     HTML.modal_house.innerHTML = "";
     HTML.modal_blood.innerHTML = "";
     HTML.modal_nickname.innerHTML = "";
+    HTML.modal_desc.innerHTML = "";
     HTML.modal_content.dataset.theme = "";
     HTML.modal.style.display = "none";
   }
@@ -176,6 +188,7 @@ function prepareStudentObjects(jsonData) {
     }
 
     student.expelled = false;
+    student.squad = false;
     student.desc = [];
     student.gender = jsonObject.gender;
     student.house = student_house;
@@ -291,6 +304,7 @@ function displayStudent(student) {
   HTML.detail_button.addEventListener("click", function() {
     // show up data on modal
     if (student.expelled) HTML.expel_button.style.display = "none";
+    if (student.blood != "Pure") HTML.squad_button.style.display = "none";
     HTML.modal_name.innerHTML = student.fullname;
     HTML.modal_nickname.innerHTML =
       student.nickName === "" ? "" : `&nbsp;${student.nickName}`;
@@ -302,9 +316,9 @@ function displayStudent(student) {
       HTML.modal_desc.innerHTML = "";
       for (let i = 0; i < student.desc.length; i++)
         HTML.modal_desc.innerHTML += `- ${student.desc[i]} <br>`;
-    }
+    } else HTML.modal_desc.innerHTML = `Nothing`;
     HTML.modal_content.dataset.theme = student.house;
-    HTML.expel_button.dataset.student = student.fullname;
+    HTML.modal_buttons.dataset.student = student.fullname;
     HTML.modal.style.display = "block";
   });
 
@@ -312,9 +326,9 @@ function displayStudent(student) {
   document.querySelector("#list tbody").appendChild(clone);
 }
 
-function expelButton(e) {
+function expelButton() {
   const student = students.find(
-    ele => ele.fullname === e.target.dataset.student
+    ele => ele.fullname === HTML.modal_buttons.dataset.student
   );
   HTML.expel_alert.classList.add("show");
   HTML.expel_yes.addEventListener("click", expelYes);
@@ -324,6 +338,38 @@ function expelButton(e) {
     student.desc.push(`Expelled from Hogwarts since ${getCurrentDate()}`);
     HTML.expel_alert.classList.remove("show");
     HTML.expel_yes.removeEventListener("click", expelYes);
+    HTML.modal.style.display = "none";
+    displayList(sortStudentsByData());
+  }
+}
+
+function squadButton() {
+  const student = students.find(
+    ele => ele.fullname === HTML.modal_buttons.dataset.student
+  );
+
+  if (student.squad)
+    document.querySelector("#squad h1").innerText =
+      "Do you want to remove this student from inquisitorial squad?";
+  else
+    document.querySelector("#squad h1").innerText =
+      "Do you want to add this student to inquisitorial squad?";
+
+  HTML.squad_alert.classList.add("show");
+  HTML.squad_toggle.addEventListener("click", squadToggle);
+
+  function squadToggle() {
+    student.squad = !student.squad;
+    if (student.squad)
+      student.desc.push(
+        `Became a Inquisitorial Squad Member since ${getCurrentDate()}`
+      );
+    else
+      student.desc.push(
+        `Came out from Inquisitorial Squad at ${getCurrentDate()}`
+      );
+    HTML.squad_alert.classList.remove("show");
+    HTML.squad_toggle.removeEventListener("click", squadToggle);
     HTML.modal.style.display = "none";
     displayList(sortStudentsByData());
   }

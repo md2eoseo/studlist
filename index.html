@@ -103,14 +103,10 @@
             </div>
           </div>
           <div class="modal_content_bottom">
-            <p class="modal_desc">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Provident, quod, reprehenderit minus architecto laboriosam odit
-              numquam tempora accusamus distinctio quos ea. Fuga numquam laborum
-              et ea fugiat quas cumque deserunt!
-            </p>
-            <div class="modal_buttons">
-              <button class="expel_button">Expel</button>
+            <p class="modal_desc"></p>
+            <div class="modal_buttons" data-student="">
+              <button class="squad_button">⭐</button>
+              <button class="expel_button">❌</button>
             </div>
           </div>
         </div>
@@ -123,7 +119,15 @@
         <h1>Do you really want to expel this student?</h1>
         <h2>You cannot undo student's expelled status!!</h2>
         <button data-action="expel_yes">Yes</button>
-        <button data-action="expel_no">No</button>
+        <button data-action="no_button">No</button>
+      </div>
+    </div>
+
+    <div id="squad" class="alert">
+      <div class="alertcontent">
+        <h1>Do you want to add this student to inquisitorial squad?</h1>
+        <button data-action="squad_toggle">Yes</button>
+        <button data-action="no_button">No</button>
       </div>
     </div>
   </body>
