@@ -368,13 +368,13 @@ function filterButton(e) {
   displayListWithCurrentSetting();
 }
 
-function displayListWithCurrentSetting() {
-  if (settings.filter === "*") displayList(students);
-  else if (settings.typeOfFilter === "house")
-    displayList(filterStudentsByHouse(settings.filter));
-  else if (settings.typeOfFilter === "expelled")
-    displayList(filterExpelledStudents());
-}
+// function displayListWithCurrentSetting() {
+//   if (settings.filter === "*") displayList(students);
+//   else if (settings.typeOfFilter === "house")
+//     displayList(filterStudentsByHouse(settings.filter));
+//   else if (settings.typeOfFilter === "expelled")
+//     displayList(filterExpelledStudents());
+// }
 
 function sortStudentsByData() {
   const filtered_list = filterStudentsByHouse(settings.filter);
