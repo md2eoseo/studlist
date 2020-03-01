@@ -14,10 +14,7 @@
 window.addEventListener("DOMContentLoaded", start);
 
 const HTML = {};
-const url = [
-  "http://petlatkea.dk/2020/hogwarts/students.json",
-  "http://petlatkea.dk/2020/hogwarts/families.json"
-];
+const url = ["js/students.json", "js/families.json"];
 let studentsJSON;
 let familiesJSON;
 const students = [];
