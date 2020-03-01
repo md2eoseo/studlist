@@ -9,6 +9,8 @@
 // https://gomakethings.com/es6-foreach-loops-with-vanilla-javascript/
 // fetching json file
 // https://stackoverflow.com/questions/51859358/how-to-read-json-file-with-fetch-in-javascript
+// removeEventListener
+// https://medium.com/beginners-guide-to-mobile-web-development/one-off-event-listeners-in-javascript-92e19c4c0336
 window.addEventListener("DOMContentLoaded", start);
 
 const HTML = {};
@@ -381,7 +383,10 @@ function filterButton(e) {
 // }
 
 function sortStudentsByData() {
-  const filtered_list = filterStudentsByHouse(settings.filter);
+  const filtered_list =
+    settings.typeOfFilter == "expelled"
+      ? filterExpelledStudents()
+      : filterStudentsByHouse(settings.filter);
   const dir = settings.sortDir === "desc" ? 1 : -1;
 
   return filtered_list.sort((a, b) =>
