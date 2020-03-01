@@ -158,7 +158,7 @@ function prepareStudentObjects(jsonData) {
 
     student.gender = jsonObject.gender;
     student.house = student_house;
-    student.blood = setBloodStatus(student.lastName) ? "Half" : "Pure";
+    student.blood = setBloodStatus(student.lastName, student.house);
     student.profile = setProfileName(student.lastName, student.firstName);
 
     students.push(student);
@@ -181,10 +181,11 @@ function prepareStudentObjects(jsonData) {
         .toLowerCase()}.png`;
   }
 
-  function setBloodStatus(lastName) {
+  function setBloodStatus(lastName, house) {
+    if (house === "Slytherin") return "Pure";
     const result = familiesJSON.half.find(e => e === lastName);
-    if (result == undefined) return false;
-    else return true;
+    if (result == undefined) return "Pure";
+    else return "Half";
   }
 
   function fullnameCapitalization(fullname) {
