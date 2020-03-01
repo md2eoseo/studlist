@@ -32,7 +32,7 @@ const Student = {
   gender: "",
   house: "",
   profile: "",
-  desc: "",
+  desc: [],
   age: 0,
   expelled: false
 };
@@ -60,6 +60,7 @@ function start() {
   HTML.modal_nickname = document.querySelector(".modal_nickname");
   HTML.modal_blood = document.querySelector(".modal_blood");
   HTML.modal_profile = document.querySelector(".modal_profile");
+  HTML.modal_desc = document.querySelector(".modal_desc");
   HTML.modal_close = document.querySelector(".modal_close");
   HTML.expel_button = document.querySelector(".expel_button");
   HTML.expel_alert = document.querySelector("#expel");
@@ -175,6 +176,7 @@ function prepareStudentObjects(jsonData) {
     }
 
     student.expelled = false;
+    student.desc = [];
     student.gender = jsonObject.gender;
     student.house = student_house;
     student.blood = setBloodStatus(student.lastName, student.house);
@@ -296,6 +298,11 @@ function displayStudent(student) {
     HTML.modal_house.innerHTML = student.house;
     HTML.modal_blood.innerHTML = student.blood;
     HTML.modal_profile.src = student.profile;
+    if (student.desc.length != 0) {
+      HTML.modal_desc.innerHTML = "";
+      for (let i = 0; i < student.desc.length; i++)
+        HTML.modal_desc.innerHTML += `- ${student.desc[i]} <br>`;
+    }
     HTML.modal_content.dataset.theme = student.house;
     HTML.expel_button.dataset.student = student.fullname;
     HTML.modal.style.display = "block";
@@ -313,8 +320,8 @@ function expelButton(e) {
   HTML.expel_yes.addEventListener("click", expelYes);
 
   function expelYes() {
-    console.log(student.fullname);
     student.expelled = true;
+    student.desc.push(`Expelled from Hogwarts since ${getCurrentDate()}`);
     HTML.expel_alert.classList.remove("show");
     HTML.expel_yes.removeEventListener("click", expelYes);
     HTML.modal.style.display = "none";
@@ -374,14 +381,6 @@ function filterButton(e) {
     displayList(filterExpelledStudents());
 }
 
-// function displayListWithCurrentSetting() {
-//   if (settings.filter === "*") displayList(students);
-//   else if (settings.typeOfFilter === "house")
-//     displayList(filterStudentsByHouse(settings.filter));
-//   else if (settings.typeOfFilter === "expelled")
-//     displayList(filterExpelledStudents());
-// }
-
 function sortStudentsByData() {
   const filtered_list =
     settings.typeOfFilter == "expelled"
@@ -419,4 +418,13 @@ function sortButton(e) {
 
   e.target.dataset.action = "sorted";
   displayList(sortStudentsByData());
+}
+
+function getCurrentDate() {
+  const today = new Date(),
+    dd = String(today.getDate()).padStart(2, "0"),
+    mm = String(today.getMonth() + 1).padStart(2, "0"),
+    yyyy = today.getFullYear();
+
+  return dd + "/" + mm + "/" + yyyy;
 }

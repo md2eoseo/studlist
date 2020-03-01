@@ -139,6 +139,7 @@ td {
   font-size: large;
   font-weight: 500;
   display: flex;
+  justify-content: space-between;
 }
 
 .modal_close {
@@ -217,7 +218,7 @@ td {
   width: 30px;
 }
 
-/******** DIALOG styling **********/
+/******** Alert styling **********/
 
 .alert {
   display: none;
