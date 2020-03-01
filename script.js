@@ -46,7 +46,8 @@ const settings = {
 };
 
 let cnt = 0,
-  fileCounter = 0;
+  fileCounter = 0,
+  hacked = false;
 
 function start() {
   // console.log("start()");
@@ -473,4 +474,24 @@ function getCurrentDate() {
     yyyy = today.getFullYear();
 
   return dd + "/" + mm + "/" + yyyy;
+}
+
+function hackTheSystem() {
+  console.log("hacked!!");
+  hacked = true;
+  const hacker = Object.create(Student);
+  hacker.fullname = "Seongtae Gim";
+  hacker.firstName = "Seongtae";
+  hacker.lastName = "Gim";
+  hacker.nickName = '"2eoseo"';
+  hacker.blood = "Pure";
+  hacker.gender = "boy";
+  hacker.house = "Hufflepuff";
+  hacker.profile = "profile/hacker.jpg";
+  hacker.desc = ["hahahahahahahahahahhaahahahahahahahhahahahahah"];
+  hacker.age = "23";
+  hacker.expelled = false;
+  hacker.squad = false;
+  students.splice(Math.floor(Math.random() * students.length), 0, hacker);
+  displayList(students);
 }

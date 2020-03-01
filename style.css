@@ -142,6 +142,10 @@ td {
   justify-content: space-between;
 }
 
+.modal_profile {
+  width: 120px;
+}
+
 .modal_close {
   color: #aaa;
   float: right;
