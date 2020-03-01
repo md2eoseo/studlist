@@ -316,7 +316,7 @@ function expelButton(e) {
     HTML.expel_alert.classList.remove("show");
     HTML.expel_yes.removeEventListener("click", expelYes);
     HTML.modal.style.display = "none";
-    displayListWithCurrentSetting();
+    displayList(sortStudentsByData());
   }
 }
 
