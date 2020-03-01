@@ -170,6 +170,7 @@ function prepareStudentObjects(jsonData) {
       );
     }
 
+    student.expelled = false;
     student.gender = jsonObject.gender;
     student.house = student_house;
     student.blood = setBloodStatus(student.lastName, student.house);
@@ -262,7 +263,7 @@ function displayStudent(student) {
   // console.log("displayStudent()");
 
   // if its expelled student, don't show up on the list
-  if (student.expelled === true) return;
+  if (settings.filter != "expelled" && student.expelled === true) return;
 
   // create clone
   const clone = document
@@ -312,7 +313,7 @@ function expelButton(student) {
   HTML.expel_yes.addEventListener("click", expelYes);
 
   function expelYes() {
-    console.log("Expel YesButton!!");
+    console.log(student.fullname);
     student.expelled = true;
     HTML.expel_alert.classList.remove("show");
     setTimeout(function() {
@@ -329,6 +330,16 @@ function filterStudentsByHouse(house) {
 
   function filterFunction(student) {
     if (student.house === house) return true;
+    else return false;
+  }
+  return result;
+}
+
+function filterExpelledStudents() {
+  const result = students.filter(filterFunction);
+
+  function filterFunction(student) {
+    if (student.expelled === true) return true;
     else return false;
   }
   return result;
@@ -360,6 +371,7 @@ function filterButton(e) {
   if (settings.filter === "*") displayList(students);
   else if (selected_type === "house")
     displayList(filterStudentsByHouse(settings.filter));
+  else if (selected_type === "expelled") displayList(filterExpelledStudents());
 }
 
 function sortStudentsByData() {
